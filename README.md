@@ -42,7 +42,7 @@ This application is hosted on GitHub Pages and requires no server-side processin
 
 ## Access the Application
 
-Visit: [Your GitHub Pages URL will appear here after setup]
+Visit: https://e2skm.github.io/Today_List/
 
 ---
 
