@@ -46,6 +46,31 @@ setInterval(updateCountdown, 1000);
 generateRecurringTasks();
 renderTodoList();
 
+// Add touch event listeners for better mobile support
+document.addEventListener('DOMContentLoaded', function() {
+  // Add touch feedback for buttons
+  const buttons = document.querySelectorAll('button');
+  buttons.forEach(button => {
+    button.addEventListener('touchstart', function() {
+      this.style.opacity = '0.7';
+    });
+    
+    button.addEventListener('touchend', function() {
+      this.style.opacity = '1';
+    });
+  });
+  
+  // Close modals when tapping outside (improved for touch)
+  document.querySelectorAll('.modal').forEach(modal => {
+    modal.addEventListener('touchstart', function(e) {
+      if (e.target === this) {
+        this.classList.remove('active');
+        document.querySelector('.day-details').classList.add('hidden');
+      }
+    });
+  });
+});
+
 // Event listeners for new buttons
 document.querySelector('.mode-toggle-button').addEventListener('click', toggleDarkMode);
 document.querySelector('.view-deleted-tasks-button').addEventListener('click', () => toggleView('deleted'));
@@ -615,7 +640,7 @@ function renderTodoList() {
     }
     
     const html = `
-      <div class="task-card ${isEditingCard ? 'editing' : ''}" data-task-id="${id}">
+      <div class="task-card ${isEditingCard ? 'editing' : ''} ${window.innerWidth <= 480 ? 'mobile-view' : ''}" data-task-id="${id}">
         <div><strong>${name}</strong> (Value: ${complexity}) ${recurringBadge}</div>
         <div>${dateDisplay} at ${timeDisplay}</div>
         ${buttonsHtml}
@@ -774,6 +799,9 @@ window.addEventListener('click', (e) => {
     document.querySelector('.day-details').classList.add('hidden');
   }
 });
+
+// Listen for window resize to adjust layout
+window.addEventListener('resize', renderTodoList);
 
 // Check for day changes to generate recurring tasks
 setInterval(() => {
